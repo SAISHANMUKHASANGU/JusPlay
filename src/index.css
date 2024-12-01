@@ -123,6 +123,7 @@
 
 .submit:hover {
   background-color: #45a049;
+  cursor: pointer;
 }
 
 .sidebyside{
@@ -190,4 +191,8 @@
 .buyrent{
   text-align: center;
   padding: 5px;
+}
+
+.buyrent:hover{
+  cursor: pointer;
 }
