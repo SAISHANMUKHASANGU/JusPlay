@@ -15,6 +15,7 @@ function Main() {
                     </select>
             
              </nav>
+            
             <div className="quote">
                 <p className="quotetxt">Book,Play,Eat,Repeat</p>
             </div>
@@ -25,7 +26,7 @@ function Main() {
                 </div>
                 <div className="quotearea">
                     Play Anywhere,Anytime in India
-                </div>    
+                </div>
             </div>
             <h2 className="Enquiryform"> Enquiry Form</h2>
             <div id="form">
