@@ -17,7 +17,7 @@ function Main() {
                   <p className="quotetxt">Book,Play,Eat,Repeat</p>
               </div>
               <div className="sidebyside">
-                  <div>
+                  <div id="indiadiv">
                       <img className="india" src="https://www.playspots.in/wp-content/uploads/2024/11/india-map.webp"></img>
                       
                   </div>
