@@ -4,7 +4,7 @@ function Main() {
   return (
     <>
       <main className="main-body">
-      <nav className="navigation">
+            <nav className="navigation">
                     <a id="navele" href="/html/">HOME</a>
                     <a id="navele" href="/css/">CRICKET</a> 
                     <a id="navele" href="/js/">BADMINTON</a>
@@ -25,10 +25,7 @@ function Main() {
                 </div>
                 <div className="quotearea">
                     Play Anywhere,Anytime in India
-                </div>
-            
-                
-                
+                </div>    
             </div>
             <h2 className="Enquiryform"> Enquiry Form</h2>
             <div id="form">
