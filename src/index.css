@@ -4,19 +4,27 @@
 }
 
 .header{
+    display: flex;
+    justify-content: center;
     background-color: #1DB223;
     text-align: center;
-    align-content: center;
+    align-items: center;
     color: whitesmoke;
     height: 75px;
+    position: sticky;
+    top:0;
     
 }
 
 .navigation{
+  display: flex;
+  position: sticky;
+  top: 75px;
   background-color: #FFE523;
   text-align: center;
   height: 50px;
-  align-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 #canteen{
@@ -140,4 +148,46 @@
 .Enquiryform{
   text-align: center;
   padding: 15px;
+}
+
+.products{
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+}
+
+.prod{
+  display: flex;
+  height:350px;
+  border: 3px solid black;
+  margin: 30px;
+  padding: 5px;
+  flex-direction: column;
+  width: 200px;
+  justify-content: space-between;
+  
+}
+
+.prod:hover{
+  box-shadow: 5px 5px gray;
+}
+
+.prodimg{
+  height: 150px;
+  width: 200px;
+  
+}
+
+.prodbuttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.buyrent{
+  text-align: center;
+  padding: 5px;
 }
