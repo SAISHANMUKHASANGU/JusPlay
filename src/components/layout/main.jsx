@@ -4,6 +4,7 @@ function Main() {
   return (
     <>
       <main className="main-body">
+      
       <nav className="navigation">
                     <a id="navele" href="/html/">HOME</a>
                     <a id="navele" href="/css/">CRICKET</a> 
@@ -15,6 +16,7 @@ function Main() {
                     </select>
             
              </nav>
+            
             <div className="quote">
                 <p className="quotetxt">Book,Play,Eat,Repeat</p>
             </div>

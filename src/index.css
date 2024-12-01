@@ -4,19 +4,26 @@
 }
 
 .header{
+    display: flex;
+    position: sticky;
+    top: 0;
     background-color: #1DB223;
     text-align: center;
     align-content: center;
+    justify-content: center;
     color: whitesmoke;
-    height: 75px;
+    height: px;
     
 }
 
 .navigation{
+  display: flex;
+  top:0;
+  justify-content: center;
   background-color: #FFE523;
   text-align: center;
   height: 50px;
-  align-content: center;
+  align-items: center;
 }
 
 #canteen{
