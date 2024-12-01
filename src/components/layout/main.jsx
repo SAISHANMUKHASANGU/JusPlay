@@ -20,13 +20,13 @@ function Main() {
                 <p className="quotetxt">Book,Play,Eat,Repeat</p>
             </div>
             <div className="sidebyside">
-                <div>
+                <div >
                     <img className="india" src="https://www.playspots.in/wp-content/uploads/2024/11/india-map.webp"></img>
-                    
                 </div>
-                <div className="quotearea">
-                    Play Anywhere,Anytime in India
+                <div >
+                    <h3 className="quotearea">Play Anytime Anywhere in India </h3>
                 </div>
+                
             </div>
             <h2 className="Enquiryform"> Enquiry Form</h2>
             <div id="form">

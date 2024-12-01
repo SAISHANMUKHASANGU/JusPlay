@@ -51,23 +51,22 @@
 
 .india{
   height: 500px;
-  
+  width: 800px;
   padding: 0%;
   margin: 0px;
   background-color:yellow;
 }
 
 .sidebyside{
-  display: flex;
-  width: 100%;
-  padding: 0%;
-  margin: 0px;
-
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  
+  
 }
 
 .quotearea{
   background-color: #1DB223;
-
+  width: 100%;
   height: 500px;
   margin-top: 0%;
   text-align: center;
