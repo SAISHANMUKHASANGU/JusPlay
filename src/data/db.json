@@ -1,0 +1,11 @@
+{
+  "users": [
+    {
+      "id": "af67",
+      "name": "shanu",
+      "email": "sangusaishanmukha@gmail.com",
+      "favorite_game": "football",
+      "password": "2003"
+    }
+  ]
+}
