@@ -6,7 +6,9 @@ import Form from "../pages/form"
 import React from 'react'
 import MainLayout from "../layout/MainLayout"
 import Products from "../pages/Products"
-import Login from "../pages/login"
+
+import SignIn from "../pages/login"
+import Dashboard from "../pages/DashBoard"
 
 function AppRouters() {
   return (
@@ -17,7 +19,8 @@ function AppRouters() {
                 <Route path="/" element={<Main />}/>
                 <Route path="/signup" element={<Form/>}/>
                 <Route path="/Products" element={<Products/>}/>
-                <Route path="/Login" element={<Login/>}/>
+                <Route path="/Login" element={<SignIn/>}/>
+                <Route path="/dashboard" element={<Dashboard/>}/>
                 </Routes>
             </MainLayout>
         </Router>
