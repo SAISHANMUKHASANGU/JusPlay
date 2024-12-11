@@ -2,17 +2,7 @@ function Main() {
     return (
       <>
         <main className="main-body">
-        <nav className="navigation">
-                      <a id="navele" href="/html/">HOME</a>
-                      <a id="navele" href="/css/">CRICKET</a> 
-                      <a id="navele" href="/js/">BADMINTON</a>
-                      <select id="canteen">
-                          <option value="" disabled selected>CANTEEN</option>
-                          <option value="Cricket">Veg</option>
-                          <option value="Transport">Non-Veg</option>
-                      </select>
-              
-               </nav>
+        
               <div className="quote">
                   <p className="quotetxt">Book,Play,Eat,Repeat</p>
               </div>
@@ -72,59 +62,7 @@ function Main() {
                       <button className="submit" type="submit">Search</button>
                   </form>
               </div>
-              <div className="products">
-                <div className="prod">
-                    <img className="prodimg" src="https://media.istockphoto.com/id/493868298/photo/close-up-of-a-cricket-bat.jpg?s=1024x1024&w=is&k=20&c=q2bJOBlZOSptjYSzQ83_QYEz6obvZk-P1YLJGko1pX0=" alt="" />
-                    <h1>Cricket Bat</h1>
-                    <p>This is the bat which is preffered by many international cricketers to hit massive sixes.</p>
-                    <div className="prodbuttons">
-                        <div>
-                            <p>$2.99</p>
-                            <button className="buyrent">Rent</button>
-                        </div>
-                        <div>
-                            <p>$60.99</p>
-                            <button className="buyrent">Buy</button>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-                <div className="prod">
-                <img className="prodimg" src="https://nwscdn.com/media/catalog/product/cache/h700xw700/c/r/cricket-club-ball-family_1.jpg" alt="" />
-                    <h1>Cricket Ball</h1>
-                    <p>This is a ball which will be interlinked with neauralink and spins as you think.</p>
-                    <div className="prodbuttons">
-                        <div>
-                            <p>$2.99</p>
-                            <button className="buyrent">Rent</button>
-                        </div>
-                        <div>
-                            <p>$60.99</p>
-                            <button className="buyrent">Buy</button>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-                <div className="prod">
-                <img className="prodimg" src="https://www.livemint.com/lm-img/img/2024/11/12/600x338/best_badminton_racket_1731392114857_1731392137197.webp" alt="" />
-                    <h1>Racket</h1>
-                    <p>This is a Racket which will produce a boost when you want a give a smash.</p>
-                    <div className="prodbuttons">
-                        <div>
-                            <p>$2.99</p>
-                            <button className="buyrent">Rent</button>
-                        </div>
-                        <div>
-                            <p>$60.99</p>
-                            <button className="buyrent">Buy</button>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-              </div>
+              
         </main>
       </>
     );

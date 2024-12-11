@@ -3,7 +3,7 @@
   padding: 0px;
 }
 
-.header{
+/* .header{
     display: flex;
     justify-content: center;
     background-color: #1DB223;
@@ -14,18 +14,8 @@
     position: sticky;
     top:0;
     
-}
+} */
 
-.navigation{
-  display: flex;
-  position: sticky;
-  top: 75px;
-  background-color: #FFE523;
-  text-align: center;
-  height: 50px;
-  align-items: center;
-  justify-content: center;
-}
 
 #canteen{
   background-color: #FFE523;
@@ -169,7 +159,7 @@
   flex-direction: column;
   width: 200px;
   justify-content: space-between;
-  
+  background-color: white;
 }
 
 .prod:hover{
