@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 let API_URL = "https://jusplayserver-2.onrender.com/users";
 
+
+const Div=styled.div`
+  
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:15px;
+    min-height:100vh;
+    background-image:url("https://images.squarespace-cdn.com/content/v1/65899401195ba416670c0913/cc555d6e-7ffa-4817-abea-c0cbacfbb9f5/DALL%C2%B7E+2024-05-14+12.43.52+-+A+vibrant+banner+showcasing+a+dynamic+clash+between+cricket+and+badminton.+On+the+left+side%2C+draw+a+cricket+player+in+action%2C+mid-swing+with+a+bat%2C+we.jpeg?format=1500w");
+    background-size:100% 100%;
+    background-repeat:no-repeat
+    `;
 // Styled components for styling
 const SignInContainer = styled.div`
   width: 100%;
@@ -69,6 +82,7 @@ const SignIn = () => {
     email: '',
     password: ''
   });
+  const [logins,setLogins]=useState(JSON.parse(localStorage.getItem('logins')  )|| [])
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   
@@ -80,6 +94,11 @@ const SignIn = () => {
       [name]: value
     });
   };
+  useEffect(()=>{
+    localStorage.setItem('logins',JSON.stringify(logins))
+  },[logins])
+
+
   const navigate=useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,7 +122,9 @@ const SignIn = () => {
 
         setSuccess('Login successful!');
         setError('');
-        navigate("/dashboard")
+        navigate("/dashboard", {state:{email:user.email}})
+        setLogins([...logins,{email:user.email}])
+        
       } else {
         setError('Invalid email or password');
         setSuccess('');
@@ -116,6 +137,7 @@ const SignIn = () => {
   };
 
   return (
+    <Div>
     <SignInContainer>
       <h2>Sign In</h2>
       <form onSubmit={handleSubmit}>
@@ -127,7 +149,7 @@ const SignIn = () => {
             name="email"
             value={loginData.email}
             onChange={handleChange}
-            required
+            
           />
         </FormGroup>
 
@@ -139,7 +161,7 @@ const SignIn = () => {
             name="password"
             value={loginData.password}
             onChange={handleChange}
-            required
+            
           />
         </FormGroup>
 
@@ -149,6 +171,7 @@ const SignIn = () => {
         <SignInButton type="submit">Sign In</SignInButton>
       </form>
     </SignInContainer>
+    </Div>
   );
 };
 

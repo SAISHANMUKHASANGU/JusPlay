@@ -1,20 +1,35 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { Navigate, NavLink, UNSAFE_createClientRoutesWithHMRRevalidationOptOut, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Dashboard = () => {
+let API_URL="https://jusplayserver-2.onrender.com/users"
+
+let User;
+let useremail;
+let username;
+
+
+const Dashboard =() => {
+  const [Username,setUsername]=useState(null)
   const [nextBooking, setNextBooking] = useState(null);
   const [recentActivity, setRecentActivity] = useState([]);
   const [availableTurfs, setAvailableTurfs] = useState([]);
   const [filters, setFilters] = useState({ location: '', price: [0, 1000], type: '', date: '', time: '' });
   const [promotions, setPromotions] = useState([]);
-
+  // useEffect(()=>getdata(),[])
   useEffect(() => {
+    getdata()
     // Simulating data fetching
     setNextBooking({
       turfName: 'Seaside Turf',
       date: '2024-12-15',
       time: '5:00 PM',
     });
+
+
+    // useLocation()
+  
 
     setRecentActivity([
       { id: 1, turfName: 'City Sports Arena', status: 'Completed' },
@@ -35,7 +50,50 @@ const Dashboard = () => {
       { code: 'WELCOME10', discount: '10% off on first booking' },
       { code: 'FESTIVE20', discount: '20% off during festive season' },
     ]);
+
+    apifetch()
   }, []);
+
+
+  const location=useLocation();
+    const {state}=location;
+    useremail=state.email
+    console.log("email")
+    console.log(useremail)
+    
+
+  const apifetch=async ()=>
+  {
+    try {
+      const response = await axios.get(API_URL);
+      const users = response.data;
+      console.log(users)
+
+      const user = users.find(
+        (user) => user.email ===useremail 
+      );
+      
+
+      console.log(user)
+      User=user
+      username=user.name
+      setUsername(user.name)
+      console.log(Username)
+      console.log(username)
+      console.log(User)
+
+
+      
+
+      
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      
+    }
+  }
+
+
+
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -46,10 +104,50 @@ const Dashboard = () => {
     alert(`Booking turf with ID: ${turfId}`);
   };
 
+  const getdata=async ()=>{
+    // let data=JSON.parse(localStorage.getItem('logins'))
+    // console.log(data)
+    // const response = await axios.get(
+    //   `${API_URL}`
+    // );
+
+    // console.log(response.data)
+    // console.log(data.email)
+    
+
+    // const present=response.data.find((user)=>user.email===data.email)
+    // console.log(present.email)
+    // useremail=present.email
+    console.log("dnskldnkl")
+    
+  }
+
+  // const logout=async ()=>{
+  //   let data=JSON.parse(localStorage.getItem('logins'))
+  //   const filtered=data.filter((user)=>user.email!==useremail)
+  //   console.log(filtered)
+  // }
+  const logout=async ()=>{
+    navigate("/")
+  }
+  const navigate=useNavigate()
+
+  const goto=()=>{
+    navigate("/user",{state:User})
+  }
+  
+  
+
   return (
     <DashboardWrapper>
       <TopPanel>
-        <h1>Hey User! Welcome Back To JusPlay.</h1>
+        <h1>Hey {username}! Welcome Back To JusPlay.</h1>
+        
+       
+        <button onClick={logout}>logout</button>
+        
+      
+        <button onClick={goto}>Profile</button>
         {nextBooking && (
           <NextBooking>
             <h2>Next Scheduled Booking</h2>
@@ -79,6 +177,7 @@ const Dashboard = () => {
           Price Range:
           <input type="range" name="price" min="0" max="1000" value={filters.price[1]} onChange={(e) => handleFilterChange({ target: { name: 'price', value: [0, e.target.value] } })} />
         </label>
+        
         <label>
           Turf Type:
           <select name="type" value={filters.type} onChange={handleFilterChange}>

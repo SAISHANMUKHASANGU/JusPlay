@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useState,useEffect } from 'react'
-import User from '../layout/user';
+import User from './user';
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 
@@ -82,7 +82,7 @@ function Form() {
           setUsers(response.data);
           console.log(response.data)
         } catch (error) {
-          console.log("Error fetching patient", error);
+          console.log("Error fetching User", error);
         }
       };
 
@@ -91,13 +91,13 @@ function Form() {
         try{
             console.log("hi")
             let response=await axios.delete(`${API_URL}/${id}`)
-            setUsers(users.filter((user)=>user.id!==id))
+            setUsers(users.filter((user)=>user.id!==id))  
             fetchdata()
 
         }
         catch(error)
         {
-            console.log("error deleting patient", error);
+            console.log("error deleting User", error);
         }
     }
 
@@ -149,9 +149,9 @@ function Form() {
           await setError({ password: errormessage })
           return
         }
-        else if(newuser.password.length<6)
+        else if(newuser.password.length<5)
           {
-            let errormessage="Password should be atleast 6 characters";
+            let errormessage="Password should be atleast 5 characters";
             
             await setError({ password: errormessage })
             return
@@ -205,7 +205,7 @@ function Form() {
             
         }
         catch(error){
-            console.log("Error adding patient",error);
+            console.log("Error adding User",error);
         }
     }
     const navigate=useNavigate()
@@ -231,7 +231,7 @@ function Form() {
             );
             setEditUser(null);
           } catch (error) {
-            console.log("error updating patient", error);
+            console.log("error updating user", error);
           }
     }
 
@@ -247,7 +247,7 @@ function Form() {
             <Title>Sign Up</Title>
               <Fieldset>
                 
-                <legend>Email</legend>
+                <legend>Mail Details: </legend>
                 <Elediv>
                 <label htmlFor="email">Email:</label>
                 <input type="Email" name='email' value={newuser.email} onChange={(e)=>setNewUser({...newuser,email:e.target.value})} placeholder='Email'/>
@@ -272,7 +272,7 @@ function Form() {
                 )}
                 </Fieldset>
                 <Fieldset>
-                  <legend>Information</legend>
+                  <legend>Personal Info:</legend>
                 <Elediv>
                 <label htmlFor="username">Username:</label>
                 <input type="text" value={newuser.name} name='username' onChange={(e)=>setNewUser({...newuser,name:e.target.value})} placeholder="Username"/>
