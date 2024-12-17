@@ -2,18 +2,15 @@ import React from 'react'
 import Header from '../components/header'
 import Footer from '../components/footer'
 import UserHeader from '../components/Dashboardheader'
-import Dashboard from '../pages/DashBoard'
 
-function MainLayout({children}) {
-  const islogin=localStorage.getItem("login")
-  console.log(islogin)
+function Userlayout({children}) {
   return (
     <>
-       {islogin?<UserHeader/>:<Header/>} 
+        <UserHeader/>
         {children}
         <Footer/>
     </>
   )
 }
 
-export default MainLayout
+export default Userlayout

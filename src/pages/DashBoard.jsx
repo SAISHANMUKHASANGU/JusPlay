@@ -2,8 +2,10 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Navigate, NavLink, UNSAFE_createClientRoutesWithHMRRevalidationOptOut, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+// import turf1 from "./images/turf1.jpg"
 
 let API_URL="https://jusplayserver-2.onrender.com/users"
+let TURFS_URL="https://jusplayserver-2.onrender.com/availableTurfs"
 
 let User;
 let useremail;
@@ -15,8 +17,10 @@ const Dashboard =() => {
   const [nextBooking, setNextBooking] = useState(null);
   const [recentActivity, setRecentActivity] = useState([]);
   const [availableTurfs, setAvailableTurfs] = useState([]);
-  const [filters, setFilters] = useState({ location: '', price: [0, 1000], type: '', date: '', time: '' });
+  const [filters, setFilters] = useState({ location: '',  type: ''});
   const [promotions, setPromotions] = useState([]);
+  const [filteredturfs,setFilteredTurfs]=useState([]);
+  const [registerturf,setRegisterTurf]=useState(false)
   // useEffect(()=>getdata(),[])
   useEffect(() => {
     getdata()
@@ -36,15 +40,7 @@ const Dashboard =() => {
       { id: 2, turfName: 'Greenfield Ground', status: 'Cancelled' },
     ]);
 
-    setAvailableTurfs([
-      { id: 1, name: 'Seaside Turf', image: './Images/turf1.jpg', price: 1000, location: 'Beach Road', rating: 4.5 },
-      { id: 2, name: 'Urban Playfield', image: './Images/turf2.jpg', price: 800, location: 'MVP Colony', rating: 4.0 },
-      { id: 3, name: 'Greenfield Ground', image: './Images/turf3.jpg', price: 600, location: 'Gajuwaka', rating: 4.7 },
-      { id: 4, name: 'Stadium Turf', image: './Images/turf4.jpg', price: 600, location: 'Dwaraka Nagar', rating: 4.3 },
-      { id: 5, name: 'Hilltop Sports', image: './Images/turf5.jpg', price: 700, location: 'Simhachalam', rating: 4.2 },
-      { id: 6, name: 'City Sports Arena', image: './Images/turf6.jpg', price: 800, location: 'Siripuram', rating: 4.6 },
-      { id: 7, name: 'Hey Games', image: './Images/turf7.jpg', price: 1000, location: 'Rushikonda', rating: 4.8 },
-    ]);
+    
 
     setPromotions([
       { code: 'WELCOME10', discount: '10% off on first booking' },
@@ -129,11 +125,28 @@ const Dashboard =() => {
   // }
   const logout=async ()=>{
     navigate("/")
+    localStorage.setItem('logins',false)
   }
   const navigate=useNavigate()
 
   const goto=()=>{
     navigate("/user",{state:User})
+  }
+
+  const Filter=async()=>{
+    let avaiTurfs=await axios.get(TURFS_URL)
+    console.log(avaiTurfs)
+    setAvailableTurfs([avaiTurfs.data])
+    console.log(filters.location)
+    console.log(filters.type)
+    let filteredturf= availableTurfs.filter((turf)=>turf.type===filters.type  && turf.location===filters.location)
+    console.log(filteredturf)
+    setFilteredTurfs(filteredturf)
+    
+  }
+
+  const RegisterTurf=()=>{
+      setRegisterTurf(true)
   }
   
   
@@ -155,7 +168,7 @@ const Dashboard =() => {
             <p>{nextBooking.date} at {nextBooking.time}</p>
           </NextBooking>
         )}
-        <RecentActivity>
+        {/* <RecentActivity>
           <h2>Recent Activity</h2>
           <ul>
             {recentActivity.map((activity) => (
@@ -164,7 +177,7 @@ const Dashboard =() => {
               </li>
             ))}
           </ul>
-        </RecentActivity>
+        </RecentActivity> */}
       </TopPanel>
 
       <Filters>
@@ -173,43 +186,36 @@ const Dashboard =() => {
           Location:
           <input type="text" name="location" value={filters.location} onChange={handleFilterChange} />
         </label>
-        <label>
-          Price Range:
-          <input type="range" name="price" min="0" max="1000" value={filters.price[1]} onChange={(e) => handleFilterChange({ target: { name: 'price', value: [0, e.target.value] } })} />
-        </label>
+        
         
         <label>
           Turf Type:
           <select name="type" value={filters.type} onChange={handleFilterChange}>
-            <option value="">All</option>
-            <option value="Cricket">Cricket</option>
+            
+            <option value="Cricket" defaultChecked>Cricket</option>
             <option value="Football">Football</option>
             <option value="Badminton">Badminton</option>
           </select>
         </label>
-        <label>
-          Date:
-          <input type="date" name="date" value={filters.date} onChange={handleFilterChange} />
-        </label>
-        <label>
-          Time:
-          <input type="time" name="time" value={filters.time} onChange={handleFilterChange} />
-        </label>
+        <button onClick={Filter}>submit</button>
       </Filters>
 
       <Turfs>
         <h2>Available Turfs</h2>
         <TurfsGrid>
-          {availableTurfs.map((turf) => (
+          {filteredturfs.length>0?
+          (filteredturfs.map((turf) => (
             <TurfCard key={turf.id}>
               <img src={turf.image} alt={turf.name} />
               <h3>{turf.name}</h3>
               <p>Location: {turf.location}</p>
               <p>Price: ₹{turf.price}/hour</p>
               <p>Rating: {turf.rating} ★</p>
-              <button onClick={() => handleBooking(turf.id)}>Book Now</button>
+              <button onClick={() => handleBooking(turf.name)}>Book Now</button>
             </TurfCard>
-          ))}
+          ))):
+          <p>No available turfs</p>}
+          
         </TurfsGrid>
       </Turfs>
 
@@ -223,6 +229,8 @@ const Dashboard =() => {
           ))}
         </ul>
       </Promotions>
+      <button onClick={RegisterTurf}>Register your turf</button>
+      {registerturf && console.log("hello")}
     </DashboardWrapper>
   );
 };

@@ -1,4 +1,9 @@
+import { useEffect } from "react";
+
 function Main() {
+    useEffect(()=>{
+        localStorage.setItem('logins',false)
+      },[])    
     return (
       <>
         <main className="main-body">

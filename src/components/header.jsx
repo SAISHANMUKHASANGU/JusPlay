@@ -57,11 +57,7 @@ const Header = () => {
                       <NavLink to="/features">Features</NavLink>
                       <NavLink to="/Login">Login</NavLink>
                       
-                      <Select>
-                          <option value="" disabled selected>CANTEEN</option>
-                          <option value="Cricket">Veg</option>
-                          <option value="Transport">Non-Veg</option>
-                      </Select>
+                     
               
               </Navbar>
         </Div>

@@ -42,23 +42,5 @@
       "favorite_game": "football",
       "password": "123"
     }
-  ],
-
-  "turfs":[
-    {
-      "id":1,
-      "location":"vizag",
-      "price":"1000"
-    },
-    {
-      "id":2,
-      "location":"vizag-1",
-      "price":"500"
-    },
-    {
-      "id":3,
-      "location":"vizag-2",
-      "price":"600"
-    }
   ]
 }

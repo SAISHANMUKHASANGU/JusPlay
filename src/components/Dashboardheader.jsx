@@ -116,7 +116,7 @@ const NavLinkStyled = styled(NavLink)`
   }
 `;
 
-const Header = () => {
+const UserHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -223,4 +223,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default UserHeader;

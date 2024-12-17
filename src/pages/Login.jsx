@@ -82,7 +82,7 @@ const SignIn = () => {
     email: '',
     password: ''
   });
-  const [logins,setLogins]=useState(JSON.parse(localStorage.getItem('logins')  )|| [])
+  const [logins,setLogins]=useState(false)
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   
@@ -95,7 +95,7 @@ const SignIn = () => {
     });
   };
   useEffect(()=>{
-    localStorage.setItem('logins',JSON.stringify(logins))
+    localStorage.setItem('logins',logins)
   },[logins])
 
 
@@ -123,7 +123,8 @@ const SignIn = () => {
         setSuccess('Login successful!');
         setError('');
         navigate("/dashboard", {state:{email:user.email}})
-        setLogins([...logins,{email:user.email}])
+        setLogins(true)
+        
         
       } else {
         setError('Invalid email or password');
