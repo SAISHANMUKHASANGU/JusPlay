@@ -11,6 +11,7 @@ import SignIn from "../pages/login"
 import Dashboard from "../pages/DashBoard"
 import User from "../pages/user"
 import Userlayout from "../layout/Userlayout"
+import Book from "../pages/Book"
 
 function AppRouters() {
   
@@ -27,6 +28,7 @@ function AppRouters() {
           <Route path="/Login" element={<SignIn/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/user" element={<User/>}/>
+          <Route path="/book" element={<Book/>}/>
           </Routes>
       </MainLayout>
       </Router>

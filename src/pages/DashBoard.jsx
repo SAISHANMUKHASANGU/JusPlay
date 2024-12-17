@@ -16,11 +16,19 @@ const Dashboard =() => {
   const [Username,setUsername]=useState(null)
   const [nextBooking, setNextBooking] = useState(null);
   const [recentActivity, setRecentActivity] = useState([]);
-  const [availableTurfs, setAvailableTurfs] = useState([]);
+  const [availableTurfs, setAvailableTurfs] = useState();
   const [filters, setFilters] = useState({ location: '',  type: ''});
   const [promotions, setPromotions] = useState([]);
   const [filteredturfs,setFilteredTurfs]=useState([]);
   const [registerturf,setRegisterTurf]=useState(false)
+  const [newTurf,setNewturf]=useState({
+    name: "",
+      // image: "",
+      type: "",
+      price: "",
+      location: "",
+      rating:Math.floor(Math.random() * 5) + 1
+  })
   // useEffect(()=>getdata(),[])
   useEffect(() => {
     getdata()
@@ -96,8 +104,8 @@ const Dashboard =() => {
     setFilters({ ...filters, [name]: value });
   };
 
-  const handleBooking = (turfId) => {
-    alert(`Booking turf with ID: ${turfId}`);
+  const handleBooking = (turf) => {
+    navigate("/book",{state:{turf:{turf},user:{User}}});
   };
 
   const getdata=async ()=>{
@@ -125,6 +133,7 @@ const Dashboard =() => {
   // }
   const logout=async ()=>{
     navigate("/")
+
     localStorage.setItem('logins',false)
   }
   const navigate=useNavigate()
@@ -134,9 +143,11 @@ const Dashboard =() => {
   }
 
   const Filter=async()=>{
+    console.log("hello")
     let avaiTurfs=await axios.get(TURFS_URL)
     console.log(avaiTurfs)
-    setAvailableTurfs([avaiTurfs.data])
+    setAvailableTurfs(avaiTurfs.data)
+    console.log(availableTurfs)
     console.log(filters.location)
     console.log(filters.type)
     let filteredturf= availableTurfs.filter((turf)=>turf.type===filters.type  && turf.location===filters.location)
@@ -145,8 +156,104 @@ const Dashboard =() => {
     
   }
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewturf((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const[error,setError]=useState({
+    name:null,
+    type:null,
+    price:null,
+    location:null
+  })
+
+  const validation=async()=>{
+      let response=(await axios.get(TURFS_URL)).data
+      let filtered=response.filter((turf)=>turf.name===newTurf.name)
+      if(filtered.length>0)
+      {
+        let errormessage="Turf already exists"
+        setError({name:errormessage})
+        return
+      }
+      if(newTurf.name==="")
+      {
+        let errormessage="Turf name can't be empty"
+        setError({name:errormessage})
+        return
+      }
+      if(newTurf.type==="")
+      {
+        let errormessage="Sport can't be empty"
+        setError({type:errormessage})
+        return
+      }
+      if(newTurf.type!="Cricket"&& newTurf.type!="Football"&&newTurf.type!="Badminton")
+      {
+        console.log(newTurf.type)
+        let errormessage="Sport can be only Cricket or Football or Badminton"
+        setError({type:errormessage})
+        return
+      }
+      if(newTurf.price==="")
+      {
+        let errormessage="price can't empty"
+        setError({price:errormessage})
+        return
+      }
+      if(newTurf.price<100 && newTurf.price>=0)
+        {
+          let errormessage="price can't be less than 100"
+          setError({price:errormessage})
+          return
+        }
+      if(newTurf.price<0)
+        {
+            let errormessage="price can't be negative"
+            setError({price:errormessage})
+            return
+        }
+      if(newTurf.location==="")
+      {
+        let errormessage="Location can't be empty"
+          setError({location:errormessage})
+          return
+      }
+      else{
+        addTurf()
+      }
+      }
+
+      const addTurf=async()=>{
+          await axios.post("https://jusplayserver-2.onrender.com/availableTurfs",newTurf)
+          setNewturf({name: "",image: "",type: "",price: "",location: "",rating:Math.floor(Math.random() * 5) + 1})
+      }
+
+
+
+  
+  
+  const Submit=async(event)=>{
+    event.preventDefault()
+    console.log(newTurf)
+    validation()
+    
+
+  }
+
   const RegisterTurf=()=>{
+    if(registerturf)
+    {
+      setRegisterTurf(false)
+    }
+    else
+    {
       setRegisterTurf(true)
+    }
+    console.log(registerturf)
+      
+      
   }
   
   
@@ -211,7 +318,7 @@ const Dashboard =() => {
               <p>Location: {turf.location}</p>
               <p>Price: ₹{turf.price}/hour</p>
               <p>Rating: {turf.rating} ★</p>
-              <button onClick={() => handleBooking(turf.name)}>Book Now</button>
+              <button onClick={() => handleBooking(turf)}>Book Now</button>
             </TurfCard>
           ))):
           <p>No available turfs</p>}
@@ -229,11 +336,69 @@ const Dashboard =() => {
           ))}
         </ul>
       </Promotions>
-      <button onClick={RegisterTurf}>Register your turf</button>
-      {registerturf && console.log("hello")}
+      <RegisterButton onClick={RegisterTurf}>Register your turf</RegisterButton>
+      {registerturf ? <FormWrapper>
+      <StyledForm onSubmit={Submit}>
+        <Heading>Add Turf Details</Heading>
+        <Input
+          type="text"
+          name="name"
+          value={newTurf.name}
+          placeholder="Turf Name"
+          onChange={handleInputChange}
+        />
+        {error.name && (<div>
+              
+              <span>{error.name}</span>
+      
+          </div>
+        )}
+        <Input
+          type="text"
+          name="type"
+          value={newTurf.type}
+          placeholder="Sport"
+          onChange={handleInputChange}
+        />
+        {error.type && (<div>
+              
+              <span>{error.type}</span>
+      
+          </div>
+        )}
+        <Input
+          type="number"
+          name="price"
+          value={newTurf.price}
+          placeholder="Price per hour"
+          onChange={handleInputChange}
+          
+        />
+        {error.price && (<div>
+              
+              <span>{error.price}</span>
+      
+          </div>
+        )}
+        <Input
+          type="text"
+          name="location"
+          value={newTurf.location}
+          placeholder="Location"
+          onChange={handleInputChange}
+        />
+        {error.location && (<div>
+              
+              <span>{error.location}</span>
+      
+          </div>
+        )}
+        <Button type="submit">Submit</Button>
+      </StyledForm>
+      </FormWrapper>:""}
     </DashboardWrapper>
   );
-};
+}
 
 export default Dashboard;
 
@@ -243,6 +408,11 @@ const DashboardWrapper = styled.div`
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  
+  
 `;
 
 const TopPanel = styled.header`
@@ -383,4 +553,89 @@ const Promotions = styled.section`
     border: 1px dashed #0073e6;
     border-radius:4px;
 }
+`;
+
+const FormWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f7f9fc;
+`;
+
+const StyledForm = styled.form`
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 300px;
+`;
+
+const Input = styled.input`
+  padding: 0.75rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #5b8cfa;
+    box-shadow: 0 0 5px rgba(91, 140, 250, 0.5);
+  }
+`;
+
+const Button = styled.button`
+  background-color: #5b8cfa;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #407ee8;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+
+const Heading = styled.h2`
+  text-align: center;
+  color: #333333;
+  margin-bottom: 1rem;
+`;
+
+export const RegisterButton = styled.button`
+  background-color: #4caf50; /* Green color */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+
+  &:hover {
+    background-color: #45a049; /* Slightly darker green */
+  }
+
+  &:active {
+    transform: scale(0.98); /* Button presses in slightly */
+  }
+
+  &:disabled {
+    background-color: #a5d6a7; /* Light green for disabled */
+    cursor: not-allowed;
+  }
 `;
