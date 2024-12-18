@@ -259,6 +259,8 @@ const Dashboard =() => {
       else{
         console.log(newTurf)
         addTurf()
+        alert("New turf is added")
+        setError({name:null,type:null,price:null,location:null})
       }
       }
 
