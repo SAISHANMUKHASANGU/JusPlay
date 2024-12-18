@@ -55,7 +55,7 @@ const Dashboard =() => {
   const [newTurf,setNewturf]=useState({
     name: "",
       image: `./images/turf${Math.floor(Math.random() * 7) + 1}.jpg`,
-      type: "Cricket",
+      type: "",
       price: "",
       location: "",
       rating:Math.floor(Math.random() * 5) + 1,
@@ -300,7 +300,7 @@ const Dashboard =() => {
     navigate("/bookings",{state:selected})
 
   }
-  
+
   
 
   return (
@@ -372,7 +372,7 @@ const Dashboard =() => {
         </TurfsGrid>
       </Turfs>
 
-      <Promotions>
+      {/* <Promotions>
         <h2>Promotions & Discounts</h2>
         <ul>
           {promotions.map((promo, index) => (
@@ -381,7 +381,7 @@ const Dashboard =() => {
             </li>
           ))}
         </ul>
-      </Promotions>
+      </Promotions> */}
       <RegisterButton onClick={RegisterTurf}>Register your turf</RegisterButton>
       {registerturf ? <FormWrapper>
       <StyledForm onSubmit={Submit}>

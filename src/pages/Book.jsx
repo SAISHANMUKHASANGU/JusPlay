@@ -38,11 +38,12 @@ function Book() {
       
       let status=bookings.some((book)=>book.type=turf.type && book.shift===filters.shift && book.date===filters.date)
       if(status){
-        console.log("Already booked")
+        alert("slot already booked")
         return
       }
       else{
           // console.log(filters)
+          alert(`slot booked at ${filters.name} for playing ${filters.type} at ${filters.shift}`)
           selected.bookings.push(filters)
       }
       
@@ -111,7 +112,7 @@ justify-content:center
     
   return (
     <Div>
-      <h1>Booking Form</h1>
+      <h1 style={{textAlign:'center'}}>Booking Form</h1>
     <FormContainer onSubmit={handleSubmit}>
       <InputField type="text" value={turf.name} readOnly />
       <InputField type="number" value={turf.price} readOnly />
@@ -139,6 +140,7 @@ justify-content:center
         <option value="Afternoon">Afternoon</option>
         <option value="Evening">Evening</option>
       </SelectField>
+      <span></span>
       <SubmitButton type="submit">Submit</SubmitButton>
     </FormContainer>
     </Div>
