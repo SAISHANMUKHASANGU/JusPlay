@@ -113,6 +113,8 @@ const User = () => {
   const location=useLocation();
       const {state}=location;
       let User=state
+      
+      
       user=User.name
       favorite=User.favorite_game
 
@@ -237,9 +239,9 @@ const User = () => {
             Edit Profile
           </Button>
         )}
-        <BackButton type="button" onClick={handleBack}>
+        {/* <BackButton type="button" onClick={handleBack}>
           Back to Dashboard
-        </BackButton>
+        </BackButton> */}
         <BackButton type="button" onClick={handleDelete}>
           Delete
         </BackButton>

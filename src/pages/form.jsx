@@ -67,7 +67,8 @@ function Form() {
         email:"",
         name:"",
         favorite_game:"",
-        password:""
+        password:"",
+        bookings:[]
     })
 
     const [editUser, setEditUser] = useState(null);
@@ -200,7 +201,7 @@ function Form() {
             
             const response=await axios.post(API_URL,newuser)
             setUsers([...users,response.data])
-            setNewUser({name:"",email:"",favorite_game:"",password:""})
+            setNewUser({name:"",email:"",favorite_game:"",password:"",bookings:[]})
 
             
         }

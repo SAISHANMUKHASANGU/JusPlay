@@ -10,24 +10,57 @@ let TURFS_URL="https://jusplayserver-2.onrender.com/availableTurfs"
 let User;
 let useremail;
 let username;
+let Profile;
+
 
 
 const Dashboard =() => {
-  const [Username,setUsername]=useState(null)
+  
+
+  const location=useLocation();
+    const {state}=location;
+    User=state;
+    console.log(User)
+    
+    
+    
+    useremail=state.email
+    
+    
+    
+
+  const getuserdata=async()=>{
+    const required_data=(await axios.get(API_URL)).data
+    console.log(required_data)
+    let User=required_data.find((user)=>user.email===useremail)
+    console.log(User)
+    
+    
+    
+  }
+
+  useEffect(()=>{
+      getuserdata()
+    },[])
+  
+  const [UserID,setUserID]=useState(User.id);
+  const [Username,setUsername]=useState(null);
   const [nextBooking, setNextBooking] = useState(null);
   const [recentActivity, setRecentActivity] = useState([]);
   const [availableTurfs, setAvailableTurfs] = useState();
-  const [filters, setFilters] = useState({ location: '',  type: ''});
+  const [filters, setFilters] = useState({ location: '',  type: 'Cricket'});
   const [promotions, setPromotions] = useState([]);
   const [filteredturfs,setFilteredTurfs]=useState([]);
   const [registerturf,setRegisterTurf]=useState(false)
   const [newTurf,setNewturf]=useState({
     name: "",
-      // image: "",
-      type: "",
+      image: `./images/turf${Math.floor(Math.random() * 7) + 1}.jpg`,
+      type: "Cricket",
       price: "",
       location: "",
-      rating:Math.floor(Math.random() * 5) + 1
+      rating:Math.floor(Math.random() * 5) + 1,
+      user:User.email,
+      bookings:[]
   })
   // useEffect(()=>getdata(),[])
   useEffect(() => {
@@ -59,12 +92,7 @@ const Dashboard =() => {
   }, []);
 
 
-  const location=useLocation();
-    const {state}=location;
-    useremail=state.email
-    console.log("email")
-    console.log(useremail)
-    
+  
 
   const apifetch=async ()=>
   {
@@ -104,9 +132,7 @@ const Dashboard =() => {
     setFilters({ ...filters, [name]: value });
   };
 
-  const handleBooking = (turf) => {
-    navigate("/book",{state:{turf:{turf},user:{User}}});
-  };
+ 
 
   const getdata=async ()=>{
     // let data=JSON.parse(localStorage.getItem('logins'))
@@ -138,9 +164,19 @@ const Dashboard =() => {
   }
   const navigate=useNavigate()
 
-  const goto=()=>{
-    navigate("/user",{state:User})
+  const goto=async()=>{
+    let response=await axios.get("https://jusplayserver-2.onrender.com/users")
+    let data=response.data
+    console.log(data)
+    
+    let selected=data.find((user)=>user.email===User.email)
+    console.log(selected)
+    navigate("/user",{state:selected})
   }
+
+  const handleBooking = (turf) => {
+    navigate("/book",{state:{turf:{turf},user:{User}}});
+  };
 
   const Filter=async()=>{
     console.log("hello")
@@ -221,13 +257,14 @@ const Dashboard =() => {
           return
       }
       else{
+        console.log(newTurf)
         addTurf()
       }
       }
 
       const addTurf=async()=>{
           await axios.post("https://jusplayserver-2.onrender.com/availableTurfs",newTurf)
-          setNewturf({name: "",image: "",type: "",price: "",location: "",rating:Math.floor(Math.random() * 5) + 1})
+          setNewturf({name: "",image: `./images/turf${Math.floor(Math.random() * 7) + 1}`,type: "",price: "",location: "",rating:Math.floor(Math.random() * 5) + 1,user:User.id,bookings:[]})
       }
 
 
@@ -255,6 +292,14 @@ const Dashboard =() => {
       
       
   }
+
+  const bookings=async()=>{
+    let response=await axios.get(API_URL)
+    let data=response.data
+    let selected=data.find((user)=>user.email===useremail)
+    navigate("/bookings",{state:selected})
+
+  }
   
   
 
@@ -268,13 +313,14 @@ const Dashboard =() => {
         
       
         <button onClick={goto}>Profile</button>
-        {nextBooking && (
+        <button onClick={bookings}>bookings</button>
+        {/* {nextBooking && (
           <NextBooking>
             <h2>Next Scheduled Booking</h2>
             <p>{nextBooking.turfName}</p>
             <p>{nextBooking.date} at {nextBooking.time}</p>
           </NextBooking>
-        )}
+        )} */}
         {/* <RecentActivity>
           <h2>Recent Activity</h2>
           <ul>
@@ -316,7 +362,7 @@ const Dashboard =() => {
               <img src={turf.image} alt={turf.name} />
               <h3>{turf.name}</h3>
               <p>Location: {turf.location}</p>
-              <p>Price: ₹{turf.price}/hour</p>
+              <p>Price: ₹{turf.price}/shift</p>
               <p>Rating: {turf.rating} ★</p>
               <button onClick={() => handleBooking(turf)}>Book Now</button>
             </TurfCard>
@@ -370,7 +416,7 @@ const Dashboard =() => {
           type="number"
           name="price"
           value={newTurf.price}
-          placeholder="Price per hour"
+          placeholder="Price per slot"
           onChange={handleInputChange}
           
         />

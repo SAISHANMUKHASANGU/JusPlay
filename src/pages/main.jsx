@@ -25,7 +25,7 @@ function Main() {
                   
                   
               </div>
-              <h2 className="Enquiryform"> Enquiry Form</h2>
+              {/* <h2 className="Enquiryform"> Enquiry Form</h2>
               <div id="form">
                   <form id="searchingform">
                       <select id="category">
@@ -68,7 +68,7 @@ function Main() {
                       
                       <button className="submit" type="submit">Search</button>
                   </form>
-              </div>
+              </div> */}
               
         </main>
       </>

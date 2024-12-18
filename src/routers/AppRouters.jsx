@@ -12,6 +12,8 @@ import Dashboard from "../pages/DashBoard"
 import User from "../pages/user"
 import Userlayout from "../layout/Userlayout"
 import Book from "../pages/Book"
+import Features from "../pages/Features"
+import UserBookings from "../pages/UserBookings"
 
 function AppRouters() {
   
@@ -29,6 +31,8 @@ function AppRouters() {
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/user" element={<User/>}/>
           <Route path="/book" element={<Book/>}/>
+          <Route path="/features" element={<Features/>}/>
+          <Route path="/bookings" element={<UserBookings/>}/>
           </Routes>
       </MainLayout>
       </Router>
