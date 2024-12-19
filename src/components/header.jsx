@@ -56,6 +56,8 @@ const Header = () => {
                       <NavLink to="/products">Products</NavLink>
                       <NavLink to="/features">Features</NavLink>
                       <NavLink to="/Login">Login</NavLink>
+                      <NavLink to="/owner">Owner SignUp</NavLink>
+                      <NavLink to="/ownerlogin">Owner signIn</NavLink>
                       
                      
               

@@ -4,24 +4,51 @@ import { Navigate, NavLink, UNSAFE_createClientRoutesWithHMRRevalidationOptOut, 
 import styled from 'styled-components';
 // import turf1 from "./images/turf1.jpg"
 
-let API_URL="https://jusplayserver-2.onrender.com/users"
+let API_URL="https://jusplayserver-2.onrender.com/owners"
 let TURFS_URL="https://jusplayserver-2.onrender.com/availableTurfs"
 
 let User;
 let useremail;
 let username;
 let Profile;
+let email;
 
 
 
-const Dashboard =() => {
+const OwnerDashboard =() => {
+    const [selected,setSelected]=useState("")
+
+    // useEffect(async()=>{
+    //     let response=await axios.get(API_URL)
+    //     let data=response.data
+    //     let selected=data.find((user)=>user.email===User.email)
+    //     Profile
+        
+    // })
+    const getselected=async()=>{
+        let response=await axios.get(API_URL)
+        // console.log(response)
+        let data=response.data
+        
+        
+        let selected=data.find((dat)=>dat.email===User.email)
+        
+        setSelected(selected)
+        console.log("selected")
+        console.log(selected)
+    }
+    
   
 
   const location=useLocation();
     const {state}=location;
-    User=state;
+    User=state.User;
+    email=state.User.email
+    console.log("User")
     console.log(User)
+
     
+
     
     
     useremail=state.email
@@ -33,7 +60,7 @@ const Dashboard =() => {
     const required_data=(await axios.get(API_URL)).data
     console.log(required_data)
     let User=required_data.find((user)=>user.email===useremail)
-    console.log(User)
+    console.log(User.turfs)
     
     
     
@@ -42,6 +69,8 @@ const Dashboard =() => {
   useEffect(()=>{
       getuserdata()
     },[])
+
+    
   
   const [UserID,setUserID]=useState(User.id);
   const [Username,setUsername]=useState(null);
@@ -52,6 +81,7 @@ const Dashboard =() => {
   const [promotions, setPromotions] = useState([]);
   const [filteredturfs,setFilteredTurfs]=useState([]);
   const [registerturf,setRegisterTurf]=useState(false)
+  const [turfs,setTurfs]=useState(User.turfs)
   const [newTurf,setNewturf]=useState({
     name: "",
       image: `./images/turf${Math.floor(Math.random() * 7) + 1}.jpg`,
@@ -62,6 +92,7 @@ const Dashboard =() => {
       user:User.email,
       bookings:[]
   })
+
   // useEffect(()=>getdata(),[])
   useEffect(() => {
     getdata()
@@ -71,6 +102,8 @@ const Dashboard =() => {
       date: '2024-12-15',
       time: '5:00 PM',
     });
+
+    
 
 
     // useLocation()
@@ -266,6 +299,16 @@ const Dashboard =() => {
 
       const addTurf=async()=>{
           await axios.post("https://jusplayserver-2.onrender.com/availableTurfs",newTurf)
+          let response=await axios.get(API_URL)
+          let data=response.data
+          let selectedowner=data.find((data)=>data.email===User.email)
+          selectedowner.turfs.push(newTurf)
+          let id=selectedowner.id
+          await axios.put(`${API_URL}/${id}`,selectedowner)
+          console.log(selectedowner.turfs)
+          setTurfs(selectedowner.turfs)
+        
+
           setNewturf({name: "",image: `./images/turf${Math.floor(Math.random() * 7) + 1}`,type: "",price: "",location: "",rating:Math.floor(Math.random() * 5) + 1,user:User.id,bookings:[]})
       }
 
@@ -275,7 +318,7 @@ const Dashboard =() => {
   
   const Submit=async(event)=>{
     event.preventDefault()
-    console.log(newTurf)
+    
     validation()
     
 
@@ -302,12 +345,37 @@ const Dashboard =() => {
     navigate("/bookings",{state:selected})
 
   }
+  const remove=async(turf)=>{
+    let response=await axios.get(API_URL)
+    let data=response.data
+    let selected=data.find((user)=>user.email===email)
+    console.log(selected.turfs)
+    selected.turfs=selected.turfs.filter((tur)=>tur.name!==turf.name || tur.location!==turf.location || tur.price!==turf.price || tur.type!==turf.type)
+    console.log(selected.turfs)
+    await axios.put(`${API_URL}/${selected.id}`,selected)
+    setTurfs(selected.turfs)
+    let turfs=await axios.get(TURFS_URL)
+    let turfsdata=turfs.data
+    console.log(turfsdata)
+    turfsdata=turfsdata.filter((tur)=>tur.name!==turf.name || tur.location!==turf.location || tur.price!==turf.price || tur.type!==turf.type)
+    console.log(turfsdata)
+    await axios.put(TURFS_URL,turfsdata)
+  }
+
 
   
 
   return (
     <DashboardWrapper>
-      <TopPanel>
+        
+        {turfs.length===0?<h1>No Turfs Registered on your name</h1>:(turfs.map((turf)=>(<div>
+            <p>Turf Name:{turf.name}</p>
+            <p>Turf Location:{turf.location}</p>
+            <p>Price for Session:{turf.price}</p>
+            <p>Sport:{turf.type}</p>
+            <button onClick={()=>remove(turf)}>Remove</button>
+        </div>)))}
+      {/* <TopPanel>
         <h1>Hey {username}! Welcome Back To JusPlay.</h1>
         
        <div style={{display:'flex',gap:'15px'}}>
@@ -315,7 +383,7 @@ const Dashboard =() => {
       <BookingsButton onClick={bookings}>Bookings</BookingsButton>
       <LogoutButton onClick={logout}>Logout</LogoutButton>
 
-       </div>
+       </div> */}
         
         {/* {nextBooking && (
           <NextBooking>
@@ -334,9 +402,9 @@ const Dashboard =() => {
             ))}
           </ul>
         </RecentActivity> */}
-      </TopPanel>
+      {/* </TopPanel> */}
 
-      <Filters>
+      {/* <Filters>
         <h2>Filters</h2>
         <label>
           Location:
@@ -353,7 +421,7 @@ const Dashboard =() => {
             <option value="Badminton">Badminton</option>
           </select>
         </label>
-        <StyledButton onClick={Filter}>Submit</StyledButton>
+        <button onClick={Filter}>submit</button>
       </Filters>
 
       <Turfs>
@@ -373,7 +441,7 @@ const Dashboard =() => {
           <p>No available turfs</p>}
           
         </TurfsGrid>
-      </Turfs>
+      </Turfs> */}
 
       {/* <Promotions>
         <h2>Promotions & Discounts</h2>
@@ -385,6 +453,7 @@ const Dashboard =() => {
           ))}
         </ul>
       </Promotions> */}
+      
       <RegisterButton onClick={RegisterTurf}>Register your turf</RegisterButton>
       {registerturf ? <FormWrapper>
       <StyledForm onSubmit={Submit}>
@@ -449,7 +518,7 @@ const Dashboard =() => {
   );
 }
 
-export default Dashboard;
+export default OwnerDashboard;
 
 // Styled Components
 
@@ -461,7 +530,6 @@ const DashboardWrapper = styled.div`
   flex-direction:column;
   gap:10px;
   min-height:100vh;
-  
   
   
   
@@ -738,30 +806,5 @@ export const BookingsButton = styled.button`
   &:hover {
     background-color: #fdd835; /* Slightly darker yellow */
     box-shadow: 0 4px 8px rgba(253, 216, 53, 0.5);
-  }
-`;
-
-const StyledButton = styled.button`
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:active {
-    background-color: #003f7f;
-    transform: scale(0.95);
-  }
-
-  &:focus {
-    outline: 2px solid #80bdff;
   }
 `;

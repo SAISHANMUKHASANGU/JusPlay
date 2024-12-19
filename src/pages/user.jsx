@@ -6,13 +6,26 @@ import axios from "axios";
 let API_URL="https://jusplayserver-2.onrender.com/users"
 
 // Styled Components
+
+const Div=styled.div`
+  min-height:100vh;
+  background-image: url("https://images.squarespace-cdn.com/content/v1/65899401195ba416670c0913/cc555d6e-7ffa-4817-abea-c0cbacfbb9f5/DALL%C2%B7E+2024-05-14+12.43.52+-+A+vibrant+banner+showcasing+a+dynamic+clash+between+cricket+and+badminton.+On+the+left+side%2C+draw+a+cricket+player+in+action%2C+mid-swing+with+a+bat%2C+we.jpeg?format=1500w");
+  background-size: cover;
+  background-repeat: no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+`
+
 const Container = styled.div`
-  max-width: 600px;
-  margin: 2rem auto;
+  min-width: 600px;
+  
   padding: 1.5rem;
   background-color: #f8f9fa;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  
+  
 `;
 
 const Title = styled.h2`
@@ -34,7 +47,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 95%;
   padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -177,6 +190,7 @@ const User = () => {
   };
 
   return (
+    <Div>
     <Container>
       <Title>User Profile</Title>
       <ProfilePictureContainer>
@@ -247,6 +261,7 @@ const User = () => {
         </BackButton>
       </form>
     </Container>
+    </Div>
   );
 };
 

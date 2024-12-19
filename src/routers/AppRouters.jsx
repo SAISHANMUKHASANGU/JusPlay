@@ -14,6 +14,9 @@ import Userlayout from "../layout/Userlayout"
 import Book from "../pages/Book"
 import Features from "../pages/Features"
 import UserBookings from "../pages/UserBookings"
+import Owner from "../pages/OwnerSignup"
+import OwnerSignIn from "../pages/OwnerLogin"
+import OwnerDashboard from "../pages/OwnerDashboard"
 
 function AppRouters() {
   
@@ -33,6 +36,9 @@ function AppRouters() {
           <Route path="/book" element={<Book/>}/>
           <Route path="/features" element={<Features/>}/>
           <Route path="/bookings" element={<UserBookings/>}/>
+          <Route path="/owner" element={<Owner/>}/>
+          <Route path="/ownerlogin" element={<OwnerSignIn/>}/>
+          <Route path="/ownerdashboard" element={<OwnerDashboard/>}/>
           </Routes>
       </MainLayout>
       </Router>
